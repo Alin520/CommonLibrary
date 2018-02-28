@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="touched_drawable" format="reference"/>
+    <attr name="border_drawable" format="reference"/>
+    <attr name="isShowContentView" format="boolean"/>
+    <attr name="corner_radius" format="dimension"/>
+    <attr name="emptyView" format="reference"/>
+    <attr name="errorView" format="reference"/>
+    <attr name="loadingView" format="reference"/>
+
+
+    <declare-styleable name="TouchableImageButton">
+        <attr name="cover_color" format="color|reference"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CommonLinearLayout">
+        <attr name="touched_drawable"></attr>
+        <attr name="border_drawable"></attr>
+        <attr name="corner_radius"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CommonRelativeLayout">
+        <attr name="touched_drawable"></attr>
+        <attr name="border_drawable"></attr>
+        <attr name="corner_radius"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CommonFrameLayout">
+        <attr name="touched_drawable"></attr>
+        <attr name="border_drawable"></attr>
+        <attr name="corner_radius"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="RoundReactLinearLayout">
+        <attr name="isShowContentView"></attr>
+        <attr name="corner_radius" ></attr>
+        <attr name="emptyView"></attr>
+        <attr name="errorView"></attr>
+        <attr name="loadingView"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="RoundReactRelativeLayout">
+        <attr name="isShowContentView"></attr>
+        <attr name="corner_radius"></attr>
+        <attr name="emptyView"></attr>
+        <attr name="errorView"></attr>
+        <attr name="loadingView"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="RoundReactFrameLayout">
+        <attr name="isShowContentView"></attr>
+        <attr name="corner_radius"></attr>
+        <attr name="emptyView"></attr>
+        <attr name="errorView"></attr>
+        <attr name="loadingView"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="RoundRectRecyclerView">
+        <attr name="corner_radius"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="CommonItemView">
+        <attr name="leftIcon" format="reference"></attr>
+        <attr name="rightIcon" format="reference"></attr>
+        <attr name="rightText" format="string|reference"></attr>
+        <attr name="leftText" format="string|reference"></attr>
+        <attr name="leftTextColor" format="reference|integer"></attr>
+        <attr name="rigthTextColor" format="reference|integer"></attr>
+        <attr name="leftTextSize" format="dimension|reference"></attr>
+        <attr name="rightTextSize" format="dimension|reference"></attr>
+    </declare-styleable>
+
+    <!--toolbar-->
+    <declare-styleable name="AlinToolbar">
+        <attr name="barColor" format="color"/>
+
+        <attr name="barTitle" format="string|reference"/>
+        <attr name="barTitleTextSize" format="dimension|reference"/>
+        <attr name="barTitleTextColor" format="color|reference"/>
+
+        <attr name="barLeftText" format="string|reference"/>
+        <attr name="barLeftTextSize" format="dimension|reference"/>
+        <attr name="barLeftTextColor" format="color|reference"/>
+
+        <attr name="barRightText" format="string|reference"/>
+        <attr name="barRightTextSize" format="dimension|reference"/>
+        <attr name="barRightTextColor" format="color|reference"/>
+
+        <attr name="barLeftImg" format="reference"/>
+        <attr name="barCenterImg" format="reference"/>
+        <attr name="barRightImg" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="navigatetabbar">
+        <attr name="navigateTabDefaultTextColor" format="reference|color"></attr>
+        <attr name="navigateSelectTabTextColor" format="color|reference"></attr>
+        <attr name="navigateTabTextSize" format="reference|dimension"></attr>
+        <attr name="contentViewId" format="reference|integer"></attr>
+        <attr name="backgroudColor" format="color|reference"></attr>
+        <attr name="messageSize" format="dimension|reference"></attr>
+        <attr name="messageColor" format="color|reference"></attr>
+
+    </declare-styleable>
+
+    <!--弧形背景-->
+    <declare-styleable name="arc_background_image_view">
+        <attr name="arcHeight" format="dimension|reference"></attr>
+    </declare-styleable>
+
+    <!--倒计时-->
+    <declare-styleable name="countdown_view">
+        <attr name="innerCircleRaduis" format="dimension|reference"></attr>
+        <attr name="innerCircleColor" format="color|reference"></attr>
+        <attr name="outerCircleRaduis" format="dimension|reference"></attr>
+        <attr name="outerCircleColor" format="color|reference"></attr>
+        <attr name="textColor" format="color|reference"></attr>
+        <attr name="textSize" format="dimension|reference"></attr>
+        <attr name="positionDirection" format="boolean"></attr>
+        <attr name="hasAnimator" format="boolean"></attr>
+        <attr name="time" format="integer"></attr>
+    </declare-styleable>
+</resources>
