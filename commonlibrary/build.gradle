@@ -3,16 +3,12 @@ apply plugin: 'com.android.library'
 android {
     compileSdkVersion 26
 
-
-
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -34,6 +30,7 @@ dependencies {
     implementation 'com.readystatesoftware.systembartint:systembartint:1.0.3'
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation 'com.android.support:design:26.1.0'
     implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34"
 }
