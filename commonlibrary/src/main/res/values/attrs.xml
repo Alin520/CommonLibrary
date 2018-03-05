@@ -99,7 +99,6 @@
         <attr name="backgroudColor" format="color|reference"></attr>
         <attr name="messageSize" format="dimension|reference"></attr>
         <attr name="messageColor" format="color|reference"></attr>
-
     </declare-styleable>
 
     <!--弧形背景-->

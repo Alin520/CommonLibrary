@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.View;
 
 import com.alin.commonlib.dialig.LoadingProgressDialog;
+import com.alin.commonlibrary.annotations.TargetLog;
 import com.alin.commonlibrary.base.CommonActivity;
+import com.alin.commonlibrary.util.LogUtil;
 
 import butterknife.OnClick;
-
+@TargetLog(MainActivity.class)
 public class MainActivity extends CommonActivity {
 
     @Override
@@ -28,7 +30,8 @@ public class MainActivity extends CommonActivity {
     public void onClick(View view){
         switch (view.getId()){
             case R.id.text_tv:
-                Log.e("BannerClick","BannerClick.......");
+                LogUtil.showLog(MainActivity.class,"xxxx打印的内容");
+                LogUtil.showLog(MainActivity.class,"xxxx打印的内容", LogUtil.Logs.i);
                 break;
         }
     }
