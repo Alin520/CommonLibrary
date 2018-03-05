@@ -14,7 +14,7 @@
       掘金地址：https://juejin.im/post/5a7941c96fb9a0633f0dfe64
       CSDN地址：http://blog.csdn.net/hailin123123/article/details/79266112
       联系方式:
-      欢迎加入QQ群：707202045</br>
+      欢迎加入QQ群：707202045
   ![indicator样式风格](https://user-gold-cdn.xitu.io/2018/2/6/1616a124eff7cae3?w=412&h=562&f=png&s=56165)
 
 
@@ -58,6 +58,9 @@ public class MainActivity extends CommonActivity {
 ```
 
 ## 2、倒计时控件CountDownView
+>这个控件是针对于闪屏页的倒计时自定义的。
+#### 效果图
+![这里写图片描述](http://img.blog.csdn.net/20180305173443371?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaGFpbGluMTIzMTIz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 >这个控件是针对于闪屏页的倒计时自定义的。
 #### 使用方式
 ###### step1:
@@ -136,34 +139,13 @@ mCountdownView.cancle();	//取消倒计时
 ```
 
 ## 5、通用的底部NavigateTabBar
-[使用方式](https://github.com/Alin520/CommonLibrary/blob/master/CHANGELOG.md)
+>[使用说明](https://github.com/Alin520/CommonLibrary/blob/master/Navigate%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3.md)
 
-#####使用方式
-```
-<com.alin.commonlibrary.view.RoundReactFrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/test_rllyt"
-    app:emptyView="@layout/layout_empty"	//数据为空页面
-    app:errorView="@layout/layout_error"	//失败页面
-    app:loadingView="@layout/layout_loading"	//正在加载中页面
-    android:orientation="vertical"
-    android:background="@color/white"
-    app:isShowContentView="true"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+##### 效果图
+![这里写图片描述](http://img.blog.csdn.net/20180305174910393?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvaGFpbGluMTIzMTIz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-    <TextView
-        android:id="@+id/number_tv"
-        android:text="TestActivity开启presenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@color/Blue"
-        android:tag="我是number"
-        />
-</com.alin.commonlibrary.view.RoundReactFrameLayout>
-```
+
+
 如果你觉得[CommonLibrary](https://github.com/Alin520/CommonLibrary)能帮到你真正解决项目中的问题，就在博客中个我点个赞，或者去我的[CommonLibrary](https://github.com/Alin520/CommonLibrary)中star。
 如果项目中有问题，可以直接给我留言。 </br>  
 
