@@ -92,12 +92,19 @@
     </declare-styleable>
 
     <declare-styleable name="navigatetabbar">
+        <!--默认的字体颜色-->
         <attr name="navigateTabDefaultTextColor" format="reference|color"></attr>
+        <!--选中的字体颜色-->
         <attr name="navigateSelectTabTextColor" format="color|reference"></attr>
+        <!--文字的字体大小-->
         <attr name="navigateTabTextSize" format="reference|dimension"></attr>
+        <!--fragment需要显示位置的布局id-->
         <attr name="contentViewId" format="reference|integer"></attr>
+        <!--背景颜色-->
         <attr name="backgroudColor" format="color|reference"></attr>
+        <!--消息字体大小-->
         <attr name="messageSize" format="dimension|reference"></attr>
+        <!--消息字体颜色-->
         <attr name="messageColor" format="color|reference"></attr>
     </declare-styleable>
 
@@ -108,14 +115,23 @@
 
     <!--倒计时-->
     <declare-styleable name="countdown_view">
+        <!--内圆半径-->
         <attr name="innerCircleRaduis" format="dimension|reference"></attr>
+        <!--内圆颜色-->
         <attr name="innerCircleColor" format="color|reference"></attr>
+        <!--外圆半径-->
         <attr name="outerCircleRaduis" format="dimension|reference"></attr>
+        <!--外圆颜色-->
         <attr name="outerCircleColor" format="color|reference"></attr>
+        <!--倒计时字体颜色-->
         <attr name="textColor" format="color|reference"></attr>
+        <!--倒计时字体大小-->
         <attr name="textSize" format="dimension|reference"></attr>
+        <!--方向，true正方向旋转-->
         <attr name="positionDirection" format="boolean"></attr>
+        <!--是否需要动画效果-->
         <attr name="hasAnimator" format="boolean"></attr>
+        <!--倒计时时间-->
         <attr name="time" format="integer"></attr>
     </declare-styleable>
 </resources>

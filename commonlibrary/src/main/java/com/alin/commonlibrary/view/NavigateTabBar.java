@@ -106,6 +106,12 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
 
         mHoldersList = new ArrayList<>();
     }
+
+    /**
+     *
+     * @param fragmentClass 需要显示的Fragment
+     * @param tabBarParam  参数
+     */
     public void addNavigateTab(Class fragmentClass,TabBarParam tabBarParam) {
         AppUtil.checkNotNull(tabBarParam,"TabBarParam == null,addNavigateTab before init TabBarParam!");
         mHolder = new ViewHolder();
@@ -157,12 +163,13 @@ public class NavigateTabBar extends LinearLayout implements View.OnClickListener
         showFragment(defaultHolder);
     }
 
-//    横竖屏切换、内存溢出等异常
+//    横竖屏切换、内存溢出等异常,保存数据
     public void onSaveInstanceState(Bundle outState){
         if (!TextUtils.isEmpty(mCurrentTag))
             outState.putString(VIEW_HOLD_TAG_KEY,mCurrentTag);
     }
 
+    //    横竖屏切换、内存溢出等异常,获取数据
     public void onRestoreInstanceState(Bundle savedInstanceState){
         mRestoreTag = savedInstanceState.getString(VIEW_HOLD_TAG_KEY);
     }

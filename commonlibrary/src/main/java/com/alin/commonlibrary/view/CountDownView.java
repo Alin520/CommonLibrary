@@ -329,14 +329,20 @@ public class CountDownView extends View{
     public void setOnCountDownFinishListener(OnCountDownFinishListener finishListener) {
         mFinishListener = finishListener;
     }
-
+    
     //    结束倒计时
     public void cancle(){
-        if (mAnimatorSet != null) {
+        if (mAnimatorSet != null && isRunning()) {
             mAnimatorSet.cancel();
             mAnimatorSet = null;
         }
     }
+
+    //    倒计时是否还在进行
+    public boolean isRunning(){
+        return mAnimatorSet == null ? false : mAnimatorSet.isRunning();
+    }
+
 
     public OnCountDownFinishListener mFinishListener;
 
@@ -344,7 +350,9 @@ public class CountDownView extends View{
      *  isClickFinsh true 点击结束计时
      */
     public interface OnCountDownFinishListener{
+        //倒计时计时结束回调
         void onFinishListener();
+        //取消倒计时回调
         void onCancleListener();
     }
 }
