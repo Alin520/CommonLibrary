@@ -110,7 +110,7 @@ public class TestPermissionActivity extends CommonActivity implements View.OnCli
 
     @PermissionCancled(requestCode = 200)
     private void cancelCode200(){
-        Toast.makeText(this, "取消__200", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "取消200", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -120,7 +120,7 @@ public class TestPermissionActivity extends CommonActivity implements View.OnCli
      */
     @PermissionDenied(requestCode = 200)
     private boolean denyCode200(){
-        Toast.makeText(this, "禁止__200", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "禁止200", Toast.LENGTH_SHORT).show();
         return true;
     }
 
