@@ -1,0 +1,238 @@
+//apply plugin: 'com.github.dcendents.android-maven'
+//apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.novoda.bintray-release'//添加
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0.2"
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+
+//项目主页
+def siteUrl = 'https://github.com/Alin520/CommonLibrary'
+publish{
+    repoName = 'AlinMaven'//远程仓库名字,不指明，默认是上传到maven
+    userOrg = 'alinlibrary'//bintray.com的用户名
+    groupId = 'com.alin'//jcenter上的路径
+    artifactId = 'common-library'//项目名称
+    publishVersion = '1.0.2'//版本号
+    desc = '修复butterkinfe注解失效bug'//描述，不重要
+    website = siteUrl//项目主页
+}
+tasks.withType(Javadoc) {//防止编码问题
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.addStringOption('encoding', 'UTF-8')
+    options.addStringOption('charSet', 'UTF-8')
+}
+
+
+
+
+/** 以下开始是将Android Library上传到jcenter的相关配置**/
+
+////项目主页
+//def siteUrl = 'https://github.com/Alin520/CommonLibrary'    // project homepage
+////项目的版本控制地址
+//def gitUrl = 'https://github.com/Alin520/CommonLibrary.git' // project git
+//
+////发布到组织名称名字，必须填写
+//group = "com.alin"
+////发布到JCenter上的项目名字，必须填写
+//def libName = "bannerview"
+//// 版本号，下次更新是只需要更改版本号即可
+//version = "2.0.0"
+///**  上面配置后上传至jcenter后的编译路径是这样的： compile 'com.alin:alinbanner:1.0.0'  **/
+//
+////生成源文件
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+////生成文档
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    options.encoding "UTF-8"
+//    options.charSet 'UTF-8'
+//    options.author true
+//    options.version true
+//    failOnError false
+//}
+//
+////文档打包成jar
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+////拷贝javadoc文件
+//task copyDoc(type: Copy) {
+//    from "${buildDir}/docs/"
+//    into "docs"
+//}
+//
+////上传到jcenter所需要的源码文件
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+//
+//// 配置maven库，生成POM.xml文件,通用
+//install {
+//    repositories.mavenInstaller {
+//        // This generates POM.xml with proper parameters
+//        pom {
+//            project {
+//                packaging 'aar'
+//                name 'This is a perfect general bannerView'
+//                url siteUrl
+//                licenses {
+//                    license {
+//                        name 'This is a perfect general bannerView'
+//                        url 'https://github.com/Alin520/CommonLibrary'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id '15800657374'        //填写bintray或者github的用户名
+//                        name '我是程序员Alin'         //姓名
+//                        email 'alinhailin520@gmail.com'//邮箱
+//                    }
+//                }
+//                scm {
+//                    connection gitUrl
+//                    developerConnection gitUrl
+//                    url siteUrl
+//                }
+//            }
+//        }
+//    }
+//}
+//
+////上传到jcenter
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//bintray {
+//    user = properties.getProperty("bintray.user")    //读取 local.properties 文件里面的 bintray.user
+//    key = properties.getProperty("bintray.apikey")   //读取 local.properties 文件里面的 bintray.apikey
+//    configurations = ['archives']
+//    pkg {
+//        repo = "bannermaven" ////自己创建的仓库名字
+//        name = libName    //发布到JCenter上的项目名字，必须填写
+//        desc = 'This is a general bannerView framework'    //项目描述
+//        websiteUrl = siteUrl
+//        vcsUrl = gitUrl
+//        licenses = ['Apache-2.0']//不能随便写，只能是仓库创建时选择的license type
+//        userOrg = "alinlibrary" //自己创建的organization名称
+//        publish = true      // 是否是公开项目，公开别人可以引用
+//
+//        version {
+//            name = '2.0.0'
+//            desc = 'alin open library.'//描述，自己定义
+//            released = new Date()
+//            vcsTag = 'v2.0.0'
+//            attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
+//        }
+//    }
+//    configurations = ['archives']
+//}
+
+
+//version = "1.0.0"       //这个是版本号，必须填写
+////项目主页
+//def siteUrl = 'https://github.com/Alin520/CommonLibrary'    // project homepage
+////项目的版本控制地址
+//def gitUrl = 'https://github.com/Alin520/CommonLibrary.git' // project git
+//
+////compile 'com.arshowbaby:mylibrary:1.0.0'中的com.arshowbaby
+//group = "com.alin"    // 这里是groupId ,必须填写  一般填你唯一的包名
+//
+//install {
+//    repositories.mavenInstaller {
+//        // This generates POM.xml with proper parameters
+//        pom {
+//            project {
+//                packaging 'aar'
+//                // 项目描述，复制我的话，这里需要修改。
+//                name 'This is a perfect general bannerView'     //项目描述
+//                url siteUrl
+//                // 软件开源协议，现在一般都是Apache License2.0吧，复制我的，这里不需要修改。
+//                licenses {
+//                    license {
+//                        name 'The Apache Software License, Version 2.0'
+//                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//                    }
+//                }
+//                //填写开发者基本信息，复制我的，这里需要修改。
+//                developers {
+//                    developer {
+//                        id '15800657374'        //填写bintray或者github的用户名
+//                        name '我是程序员Alin'         //姓名
+//                        email 'alinhailin520@gmail.com'//邮箱
+//                    }
+//                }
+//                // SCM，复制我的，这里不需要修改。
+//                scm {
+//                    connection gitUrl
+//                    developerConnection gitUrl
+//                    url siteUrl
+//                }
+//            }
+//        }
+//    }
+//}
+//// 生成jar包的task，不需要修改。
+//task sourcesJar(type: Jar) {
+//    from android.sourceSets.main.java.srcDirs
+//    classifier = 'sources'
+//}
+//// 生成jarDoc的task，不需要修改。
+//task javadoc(type: Javadoc) {
+//    source = android.sourceSets.main.java.srcDirs
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+//    options.encoding "UTF-8"
+//    options.charSet 'UTF-8'
+//    options.author true
+//    options.version true
+//    failOnError false
+//}
+//// 生成javaDoc的jar，不需要修改
+//task javadocJar(type: Jar, dependsOn: javadoc) {
+//    classifier = 'javadoc'
+//    from javadoc.destinationDir
+//}
+//
+//artifacts {
+//    archives javadocJar
+//    archives sourcesJar
+//}
+//// 这里是读取Bintray相关的信息，我们上传项目到github上的时候会把gradle文件传上去，
+//// 所以不要把帐号密码的信息直接写在这里，写在local.properties中，这里动态读取。
+//Properties properties = new Properties()
+//properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//bintray {
+//    //读取 local.properties 文件里面的 bintray.user
+//    user = properties.getProperty("bintray.user")
+//    //读取 local.properties 文件里面的 bintray.apikey
+//    key = properties.getProperty("bintray.apikey")
+//
+//    configurations = ['archives']
+//    pkg {
+//        userOrg = "alinlibrary"      //发布到JCenter的组织，注意新版本的bintray是需要手动创建的
+//        repo = "bannermaven"          //发布到JCenter上的仓库名称，注意新版本的bintray是需要手动创建的
+//        // 发布到Bintray上的项目名字，这里的名字不是compile 'com.arshowbaby:mylibrary:1.0.0'中的mylibrary
+//        name = "bannerview"
+//        websiteUrl = siteUrl
+//        vcsUrl = gitUrl
+//        licenses = ["Apache-2.0"]
+//        publish = true  // 是否是公开项目
+//    }
+//}

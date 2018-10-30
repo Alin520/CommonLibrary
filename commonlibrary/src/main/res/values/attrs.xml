@@ -133,5 +133,7 @@
         <attr name="hasAnimator" format="boolean"></attr>
         <!--倒计时时间-->
         <attr name="time" format="integer"></attr>
+        <!--双击CountDownView时间间隔-->
+        <attr name="intervalOnClickTime" format="integer"></attr>
     </declare-styleable>
 </resources>

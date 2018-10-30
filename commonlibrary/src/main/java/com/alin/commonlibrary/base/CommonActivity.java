@@ -32,8 +32,8 @@ public abstract class CommonActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        resetStatusBar();
         setContentView(getContentViewId());
+        resetStatusBar();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         ActivityManager.getInstance().addActivity(this);
         ButterKnife.bind(this);
@@ -46,7 +46,7 @@ public abstract class CommonActivity extends AppCompatActivity {
     protected abstract int getContentViewId();
 
     //设置状态栏颜色值
-    private Integer getStatusBarColor() {
+    public Integer getStatusBarColor() {
         return null;
     }
 

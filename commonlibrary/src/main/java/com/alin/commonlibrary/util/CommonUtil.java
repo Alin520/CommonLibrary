@@ -126,7 +126,7 @@ public class CommonUtil {
      * @param
      */
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static boolean hideStatusBarIfSupporter(CommonActivity activity) {
+    public static boolean hideStatusBarIfSupporter(Activity activity) {
         boolean hasHide = false;
         Window window = activity.getWindow();
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -143,7 +143,7 @@ public class CommonUtil {
         return hasHide;
     }
 
-    public static void setStatusBarColorIfSupporter(CommonActivity activity, int color) {
+    public static void setStatusBarColorIfSupporter(Activity activity, int color) {
         getContentView(activity).setFitsSystemWindows(true);
         Window window = activity.getWindow();
 

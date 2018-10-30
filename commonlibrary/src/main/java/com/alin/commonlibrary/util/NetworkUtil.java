@@ -27,15 +27,15 @@ public class NetworkUtil {
     private static final NetworkUtil INSTANCE = new NetworkUtil();
     private NetworkChangeReceiver mChangeReceiver;
     private ConnectivityManager.NetworkCallback mNetworkCallback;
-    private int i = 0;
+
     public static NetworkUtil getInstance(){
         return INSTANCE;
     }
 
     /**
-     * 注册网络监听
+     * 注册网络状态变化监听
      * */
-    public void netWorkWatchState(final Context context){
+    public void registerWatchNetworkState(final Context context){
         mChangeReceiver = new NetworkChangeReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
@@ -43,9 +43,9 @@ public class NetworkUtil {
     }
 
     /**
-     * 反注册网络监听
+     * 反注册网络状态变化监听
      * */
-    public void unregisterNetworkReceiver(Context context){
+    public void unRegisterWatchNetworkState(Context context){
         if (mChangeReceiver != null) {
             context.unregisterReceiver(mChangeReceiver);
             mChangeReceiver = null;
@@ -59,23 +59,12 @@ public class NetworkUtil {
     }
 
     /**
-     * 获取ConnectivityManager
+     * 获取当前网络类型：WiFi、流量
+     * @param context
+     * @return
      */
-    public static ConnectivityManager getConnectivityManager(Context context) {
-        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-    }
-
-    /**
-     * 获取ConnectivityManager
-     */
-    public static TelephonyManager getTelephonyManager(Context context) {
-        return (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-    }
-
-
-
-    public NetworkState checkNetworkState(Context context){
-        NetworkState networkState = null;
+    public NetworkState getCurrentNetworkType(Context context){
+        NetworkState networkState = NetworkState.NETWORK_NONE;
         ConnectivityManager manager = getConnectivityManager(context);
         if (manager != null) {
             NetworkInfo networkInfo = manager.getActiveNetworkInfo();
@@ -86,44 +75,25 @@ public class NetworkUtil {
                     int networkType = networkInfo.getType();
                     if (networkType == ConnectivityManager.TYPE_WIFI) {     //wifi
                         networkState = NetworkState.NETWORK_WIFI;
-                        LogUtil.e(TAG,"wifi.......connected=" + connected + ",available=" + available);
-                    }else if (networkType == ConnectivityManager.TYPE_MOBILE){      //4g、3g、2g
+                        LogUtil.e(TAG, "wifi.......connected=" + connected + ",available=" + available);
+                    } else if (networkType == ConnectivityManager.TYPE_MOBILE) {      //4g、3g、2g
                         networkState = getNetworkType(context);
-                        LogUtil.e(TAG,"mobile.......connected=" + connected + ",available=" + available);
+                        LogUtil.e(TAG, "mobile.......connected=" + connected + ",available=" + available);
                     }
-                }else {   //无网络
-                    LogUtil.e(TAG,"none...111....connected=" + connected + ",available=" + available);
                 }
-
-            }else {     //无网络
-                networkState = NetworkState.NETWORK_NONE;
-                LogUtil.e(TAG,"none...222....");
             }
-        }else {
-            networkState = NetworkState.NETWORK_NONE;
-            LogUtil.e(TAG,"none...33333....");
         }
-
         return networkState;
     }
 
-    /**
-     * 判断当前网络是否已经连接
-     *
-     * @param context 上下文
-     * @return 当前网络是否已经连接。false：尚未连接
-     */
-    public static boolean isConnectedByState(Context context) {
-        return getCurrentNetworkState(context) == NetworkInfo.State.CONNECTED;
-    }
 
     /**
-     * 获取当前网络的状态
+     * 获取当前网络连接的状态（正在连接、已经连接、没有连接）
      *
      * @param context 上下文
      * @return 当前网络的状态。具体类型可参照NetworkInfo.State.CONNECTED、NetworkInfo.State.CONNECTED.DISCONNECTED等字段。当前没有网络连接时返回null
      */
-    public static NetworkInfo.State getCurrentNetworkState(Context context) {
+    public static NetworkInfo.State getCurrentNetworkConnectedState(Context context) {
         NetworkInfo networkInfo
                 = ((ConnectivityManager) context.getSystemService(
                 Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
@@ -131,10 +101,28 @@ public class NetworkUtil {
     }
 
     /**
-     * 检测网络是否为可用状态
+     *  是否有2g/3g/4g网络可用（非WiFi）
+     * @param context
+     * @return true有可用网络
      */
-    public static boolean isAvailable(Context context) {
-        return isWifiAvailable(context) || (isMobileAvailable(context) && isMobileEnabled(context));
+    public boolean isMobileAvailable(Context context) {
+        NetworkInfo[] nets = getConnectivityManager(context).getAllNetworkInfo();
+        if (nets != null) {
+            for (NetworkInfo net : nets) {
+                if (net.getType() == ConnectivityManager.TYPE_MOBILE) {
+                    return net.isAvailable();
+                }
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 检测网络是否为可用状态（WiFi和流量）
+     */
+    public boolean isNetWorkAvailable(Context context) {
+        return isWifiAvailable(context) || (isMobileAvailable(context) && isOpenNetworkSwitch(context));
     }
 
     /**
@@ -146,7 +134,7 @@ public class NetworkUtil {
      *
      * @return boolean wifi为可用状态（不一定成功连接，即Connected）即返回ture
      */
-    public static boolean isWifiAvailable(Context context) {
+    public boolean isWifiAvailable(Context context) {
         NetworkInfo[] nets = getConnectivityManager(context).getAllNetworkInfo();
         if (nets != null) {
             for (NetworkInfo net : nets) {
@@ -157,11 +145,21 @@ public class NetworkUtil {
     }
 
     /**
+     * 判断当前网络是否已经连接
+     *
+     * @param context 上下文
+     * @return 当前网络是否已经连接。false：尚未连接
+     */
+    public boolean isCurrentNetworkConnected(Context context) {
+        return getCurrentNetworkConnectedState(context) == NetworkInfo.State.CONNECTED;
+    }
+
+    /**
      * 设备是否打开移动网络开关
      *
      * @return boolean 打开移动网络返回true，反之false
      */
-    public static boolean isMobileEnabled(Context context) {
+    public  boolean isOpenNetworkSwitch(Context context) {
         try {
             Method getMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
             getMobileDataEnabledMethod.setAccessible(true);
@@ -171,21 +169,6 @@ public class NetworkUtil {
         }
         // 反射失败，默认开启
         return true;
-    }
-
-    /**
-     *
-     * @param context
-     * @return true有可用网络
-     */
-    public static boolean isMobileAvailable(Context context) {
-        NetworkInfo[] nets = getConnectivityManager(context).getAllNetworkInfo();
-        if (nets != null) {
-            for (NetworkInfo net : nets) {
-                if (net.getType() == ConnectivityManager.TYPE_MOBILE) { return net.isAvailable(); }
-            }
-        }
-        return false;
     }
 
     /**
@@ -199,6 +182,20 @@ public class NetworkUtil {
         intent.setComponent(cm);
         intent.setAction("android.intent.action.VIEW");
         activity.startActivityForResult(intent, 0);
+    }
+
+    /**
+     * 获取ConnectivityManager
+     */
+    public ConnectivityManager getConnectivityManager(Context context) {
+        return (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    }
+
+    /**
+     * 获取ConnectivityManager
+     */
+    public TelephonyManager getTelephonyManager(Context context) {
+        return (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     /**
@@ -220,7 +217,7 @@ public class NetworkUtil {
      *
      * @return {@link  NetworkState}
      */
-    public static NetworkState getNetworkType(Context context) {
+    private  NetworkState getNetworkType(Context context) {
         int type = getConnectedTypeINT(context);
         switch (type) {
             case ConnectivityManager.TYPE_WIFI:
@@ -266,7 +263,7 @@ public class NetworkUtil {
      * @return {@link ConnectivityManager#TYPE_WIFI}, {@link ConnectivityManager#TYPE_MOBILE},
      * {@link ConnectivityManager#TYPE_ETHERNET}...
      */
-    public static int getConnectedTypeINT(Context context) {
+    public int getConnectedTypeINT(Context context) {
         NetworkInfo net = getConnectivityManager(context).getActiveNetworkInfo();
         if (net != null) {
             return net.getType();
@@ -275,16 +272,12 @@ public class NetworkUtil {
     }
 
     public  enum NetworkState{
-//        None(Config.NETWORK_NONE),Wifi(Config.NETWORK_WIFI),Mobile(Config.NETWORK_MOBILE);
+        //        None(Config.NETWORK_NONE),Wifi(Config.NETWORK_WIFI),Mobile(Config.NETWORK_MOBILE);
         NETWORK_NONE,NETWORK_WIFI,NETWORK_MOBILE,NETWORK_Net2G,NETWORK_Net3G,NETWORK_Net4G;
         int networkState;
 
         public void setNetworkState(int networkState){
             this.networkState = networkState;
         }
-
-
-
     }
-
 }

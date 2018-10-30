@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alin.commonlibrary" />
+    package="com.alin.commonlibrary" >
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application>
+
+        <activity android:name=".permission.core.PermissionActivity" android:theme="@style/translucent"/>
+    </application>
+</manifest>

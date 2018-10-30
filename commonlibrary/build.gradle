@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
-apply from: "bintrayUpload.gradle"
+apply plugin: 'com.github.dcendents.android-maven'
+//apply from: "bintrayUpload.gradle"
 
 android {
     compileSdkVersion 26
@@ -37,4 +38,5 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.0.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34"
+    compile 'org.aspectj:aspectjrt:1.8.9'
 }

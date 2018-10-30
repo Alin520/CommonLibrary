@@ -30,7 +30,7 @@ public class WeakHandler {
     final   ChainedRef mRunnables = new ChainedRef(mLock, null);
 
     /**
-     * Default constructor associates this handler with the {@link Looper} for the
+     * DEFAULT constructor associates this handler with the {@link Looper} for the
      * current thread.
      *
      * If this thread does not have a looper, this handler won't be able to receive messages

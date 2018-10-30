@@ -28,6 +28,34 @@ public class FileUtils {
     private static final String TAG = FileUtils.class.getSimpleName();
     private static HashMap<String,String> map;
 
+    public static boolean exists(File file) {
+        return file!=null && file.exists();
+    }
+
+    /**
+     * 判断是否文件
+     * @param file
+     * @return
+     */
+    public static boolean isFile(File file) {
+        return exists(file) && file.isFile();
+    }
+
+    /**
+     * 判断是否目录
+     * @param file
+     * @return
+     */
+    public static boolean isDirectory(File file) {
+        return exists(file) && file.isDirectory();
+    }
+
+
+    /**
+     *  收集手机设备信息
+     * @param context
+     * @return
+     */
     public static HashMap<String,String> collectDeviceInfo(Context context){
         map = new HashMap<>();
         PackageManager pm = context.getPackageManager();

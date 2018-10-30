@@ -18,6 +18,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.alin.commonlibrary.R;
 import com.alin.commonlibrary.annotations.TargetLog;
+import com.alin.commonlibrary.listener.OnSingleClick;
 import com.alin.commonlibrary.util.AppUtil;
 import com.alin.commonlibrary.util.CommonUtil;
 import com.alin.commonlibrary.util.LogUtil;
@@ -30,8 +31,10 @@ import com.alin.commonlibrary.util.ResourcesUtil;
  * @描述 ${倒计时}.
  */
 @TargetLog(CountDownView.class)
-public class CountDownView extends View{
+public class CountDownView extends View implements OnSingleClick.OnSingleClickListener {
 
+    public static final int DEFAULT_CANCLE_TYPE = -1;   //计时取消类型
+    private int mCancleFromType = DEFAULT_CANCLE_TYPE;
     private int mInnerCircleColor;          //内圆颜色
     private int mOuterCircleColor;         //外圆颜色
     private float mInnerCircleRaduis;         //内圆半径
@@ -52,6 +55,7 @@ public class CountDownView extends View{
     private String mText;
     private ValueAnimator mAnimator1;
     private int mCurrentTime;
+    private int mIntervalOnClickTime;
 
     public CountDownView(Context context) {
         this(context,null);
@@ -72,6 +76,7 @@ public class CountDownView extends View{
             TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.countdown_view);
             if (ta != null) {
                 try {
+                    mIntervalOnClickTime = ta.getInteger(R.styleable.countdown_view_intervalOnClickTime, 1000);
                     mInnerCircleColor = ta.getColor(R.styleable.countdown_view_innerCircleColor, ResourcesUtil.getColor(getContext(),R.color.transparent_gray));
                     mOuterCircleColor = ta.getColor(R.styleable.countdown_view_outerCircleColor,  ResourcesUtil.getColor(getContext(),R.color.red));
                     mInnerCircleRaduis = ta.getDimension(R.styleable.countdown_view_innerCircleRaduis,  ResourcesUtil.getDimension(getContext(),R.dimen.default_large_text));
@@ -89,7 +94,9 @@ public class CountDownView extends View{
             }
         }
 
-//        初始化画笔
+        //        防止
+        this.setOnClickListener(new OnSingleClick(this,(long)mIntervalOnClickTime));
+        //        初始化画笔
         initPaint();
         mText = CommonUtil.fillHtmlString(getContext(), R.string.format_splash_skip,mTime).toString();
         if (mPositionDirection) {
@@ -104,19 +111,19 @@ public class CountDownView extends View{
     }
 
     private void initPaint() {
-//        内圆画笔
+        //        内圆画笔
         mInnerCirclePaint = new Paint();
         mInnerCirclePaint.setAntiAlias(true);
         mInnerCirclePaint.setStyle(Paint.Style.FILL);
         mInnerCirclePaint.setColor(mInnerCircleColor);
         mInnerCirclePaint.setStrokeWidth(mInnerCircleRaduis);
-//        外圆画笔
+        //        外圆画笔
         mOuterCirclepaint = new Paint();
         mOuterCirclepaint.setAntiAlias(true);
         mOuterCirclepaint.setStyle(Paint.Style.STROKE);
         mOuterCirclepaint.setColor(mOuterCircleColor);
         mOuterCirclepaint.setStrokeWidth(mOuterCircleRaduis - mInnerCircleRaduis);
-//        文字
+        //        文字
         mTextPaint = new Paint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setStyle(Paint.Style.STROKE);
@@ -140,9 +147,9 @@ public class CountDownView extends View{
         AppUtil.checkLargeThanZero(mInnerCircleRaduis,"InnerCircleRaduis must be > 0!");
         AppUtil.checkLargeThanZero(mOuterCircleRaduis,"OuterCircleRaduis must be > 0!");
         AppUtil.checkLargeThanZero(mOuterCircleRaduis - mInnerCircleRaduis,"OuterCircleRaduis must be > InnerCircleRaduis!");
-//        内圆
+        //        内圆
         canvas.drawCircle(mOuterCircleRaduis,mOuterCircleRaduis,mInnerCircleRaduis,mInnerCirclePaint);
-//        外圆
+        //        外圆
         if (mHasAnimator) {
             float left = (mOuterCircleRaduis - mInnerCircleRaduis) / 2;
             float right = 2 * mOuterCircleRaduis - (mOuterCircleRaduis - mInnerCircleRaduis) / 2;
@@ -154,7 +161,7 @@ public class CountDownView extends View{
             canvas.drawCircle(mOuterCircleRaduis,mOuterCircleRaduis,mOuterCircleRaduis,mInnerCirclePaint);
         }
 
-//        文字
+        //        文字
         if (!TextUtils.isEmpty(mText)) {
             Rect bounds = new Rect();
             mTextPaint.getTextBounds(mText,0,mText.length(),bounds);
@@ -164,7 +171,7 @@ public class CountDownView extends View{
         }
     }
 
-//    开始倒计时
+    //    开始倒计时
     public void start(){
         if (mHasAnimator) {
             mAnimator1 = new ValueAnimator().ofFloat(mCurrentProgress,mEndProgress);
@@ -224,7 +231,7 @@ public class CountDownView extends View{
             public void onAnimationCancel(Animator animation) {
                 LogUtil.showLog(CountDownView.class,"........onAnimationCancel......");
                 if (mFinishListener != null) {
-                    mFinishListener.onCancleListener();
+                    mFinishListener.onCancleListener(mCancleFromType);
                 }
             }
 
@@ -234,6 +241,7 @@ public class CountDownView extends View{
             }
         });
     }
+
 
     public int getInnerCircleColor() {
         return mInnerCircleColor;
@@ -329,10 +337,11 @@ public class CountDownView extends View{
     public void setOnCountDownFinishListener(OnCountDownFinishListener finishListener) {
         mFinishListener = finishListener;
     }
-    
+
     //    结束倒计时
-    public void cancle(){
+    public void cancle(int cancleFromType){
         if (mAnimatorSet != null && isRunning()) {
+            mCancleFromType = cancleFromType;
             mAnimatorSet.cancel();
             mAnimatorSet = null;
         }
@@ -346,6 +355,12 @@ public class CountDownView extends View{
 
     public OnCountDownFinishListener mFinishListener;
 
+    //    点击CountDownView 取消动画
+    @Override
+    public void onSingleClick(View view) {
+        this.cancle(mCancleFromType);
+    }
+
     /**
      *  isClickFinsh true 点击结束计时
      */
@@ -353,6 +368,6 @@ public class CountDownView extends View{
         //倒计时计时结束回调
         void onFinishListener();
         //取消倒计时回调
-        void onCancleListener();
+        void onCancleListener(int cancleFromType);
     }
 }

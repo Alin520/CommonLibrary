@@ -4,9 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 
+import com.alin.commonlibrary.util.collection.Preconditions;
+
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -17,6 +22,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -224,6 +230,12 @@ public class IOUtil
         }
     }
 
+    /**
+     * 文件拷贝
+     * @param src source {@link File}
+     * @param dest destination {@link File}
+     * @throws IOException
+     */
     public static boolean copyFile(String src, String dest)
     {
         return copyFile(new File(src), new File(dest));
@@ -361,6 +373,100 @@ public class IOUtil
         finally
         {
             inputStream.close();
+        }
+    }
+
+
+    /**
+     * 从输入流读取数据
+     * @param inStream
+     * @return
+     * @throws Exception
+     */
+    public static byte[] readInputStream(InputStream inStream) throws IOException{
+        ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int len = 0;
+        while( (len = inStream.read(buffer)) !=-1 ){
+            if (len!=0) {
+                outSteam.write(buffer, 0, len);
+            }
+        }
+        outSteam.close();
+        inStream.close();
+        return outSteam.toByteArray();
+    }
+
+    /**
+     * 从输入流读取数据
+     * @param inStream
+     * @return
+     * @throws Exception
+     */
+    public static String inputStream2String(InputStream inStream) throws IOException{
+
+        return new String(readInputStream(inStream), "UTF-8");
+    }
+
+    /**
+     *
+     * @param is
+     * @param os
+     * @throws IOException
+     */
+    public static void copyStream(InputStream is, OutputStream os) throws IOException {
+        byte[] bytes = new byte[BUFFER_SIZE];
+        for (;;) {
+            int count = is.read(bytes, 0, BUFFER_SIZE);
+            if (count == -1)
+                break;
+            os.write(bytes, 0, count);
+        }
+    }
+
+
+    /**
+     * 将流写入文件
+     * @param in
+     * @param target
+     * @throws IOException
+     */
+    public static void writeToFile(InputStream in, File target) throws IOException {
+        BufferedOutputStream bos = new BufferedOutputStream(
+                new FileOutputStream(target));
+        int count;
+        byte data[] = new byte[BUFFER_SIZE];
+        while ((count = in.read(data, 0, BUFFER_SIZE)) != -1) {
+            bos.write(data, 0, count);
+        }
+        bos.close();
+    }
+
+    /**
+     * 安全关闭io流
+     * @param closeable
+     */
+    public static void closeQuietly(Closeable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 安全关闭io流
+     * @param closeables
+     */
+    public static void closeQuietly(Closeable... closeables) {
+
+        if (Preconditions.isNotBlank(closeables)) {
+
+            for(Closeable closeable:closeables) {
+                closeQuietly(closeable); // 系统先匹配确定参数的方法，没有再去匹配调用不定项参数的方法
+            }
         }
     }
 }
